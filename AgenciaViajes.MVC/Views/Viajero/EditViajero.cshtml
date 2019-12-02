@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "EditViajero";
+}
+
+<input type="hidden" id="IdViajero" value="@Model" />
+<form id="viajeroForm">
+    <div class="container">
+
+        <fieldset>
+            <legend><h5>Editar Viajero</h5></legend>
+            <div class="form-group">
+                <label class="control-label ">Nombre:</label>
+                <input id="txtNombre" type="text" class="form-control removeLater" placeholder="Nombre" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Cédula:</label>
+                <input id="txtCedula" type="text" class="form-control removeLater" placeholder="Cédula" required />
+            </div>
+        </fieldset>
+
+
+        <fieldset>
+            <legend><h5>Dirección</h5></legend>
+            <div class="form-group">
+                <label class="control-label ">Dirección1:</label>
+                <input id="txtDireccion1" type="text" class="form-control removeLater" placeholder="Dirección1" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Dirección2:</label>
+                <input id="txtDireccion2" type="text" class="form-control removeLater" placeholder="Dirección2" />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Ciudad:</label>
+                <input id="txtCiudad" type="text" class="form-control removeLater" placeholder="Ciudad" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Estado:</label>
+                <input id="txtEstado" type="text" class="form-control removeLater" placeholder="Estado" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Teléfono Móvil:</label>
+                <input id="txtTelefonoMovil" type="text" class="form-control removeLater" placeholder="Teléfono Móvil" required />
+            </div>
+            <div class="form-group">
+                <label class="control-label ">Teléfono Fijo:</label>
+                <input id="txtTelefonoFijo" type="text" class="form-control removeLater" placeholder="Teléfono Fijo" />
+            </div>
+
+
+        </fieldset>
+
+
+        <div class="form-group">
+            <input id="btnGuardar" type="button" class="btn btn-success" value="Guardar" />
+            @*<input id="btnCancelar" type="button" class="btn btn-primary" value="Cancelar" />*@
+            <a href="/Viajero/Viajero" class="btn btn-primary">Cancelar</a>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts
+{
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            var idViajero = $("#IdViajero").val();
+
+            GetViajeroByIdViajero(idViajero);
+
+
+            $("#btnGuardar").click(function () {
+                var nombre = $("#txtNombre").val();
+                var cedula = $("#txtCedula").val();
+                var direccion1 = $("#txtDireccion1").val();
+                var direccion2 = $('#txtDireccion2').val();
+                var ciudad = $("#txtCiudad").val();
+                var estado = $("#txtEstado").val();
+                var telefonoMovil = $("#txtTelefonoMovil").val();
+                var telefonoFijo = $("#txtTelefonoFijo").val();
+
+                let objViajero = {
+                    nombre: nombre,
+                    cedula: cedula,
+                    direccion: {
+                        direccion1: direccion1,
+                        direccion2: direccion2,
+                        ciudad: ciudad,
+                        estado: estado,
+                        telefonoMovil: telefonoMovil,
+                        telefonoFijo: telefonoFijo
+                    }
+                };
+                UpdateViajero(objViajero, idViajero);
+                $(".removeLater").val('');
+                //Go();
+            });
+            $("#btnCancelar").click(function () {
+                // Go();
+            });
+
+        });
+        //Obtiene una instancia del objeto Viajero por el IdViajero
+        function GetViajeroByIdViajero(IdViajero) {
+
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero/GetViajerosByIdViajero/?IdViajero=' + IdViajero,
+                type: "GET",
+                data: IdViajero,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (viajero) {
+                    $('#txtNombre').val(viajero.Nombre);
+                    $('#txtCedula').val(viajero.Cedula);
+                    $('#txtDireccion1').val(viajero.Direccion.Direccion1);
+                    $('#txtDireccion2').val(viajero.Direccion.Direccion2);
+                    $("#txtCiudad").val(viajero.Direccion.Ciudad);
+                    $("#txtEstado").val(viajero.Direccion.Estado);
+                    $("#txtTelefonoMovil").val(viajero.Direccion.TelefonoMovil);
+                    $("#txtTelefonoFijo").val(viajero.Direccion.TelefonoFijo);
+
+                }
+            });
+        }
+
+        //Actualiza la instancia del objeto Viajero, con los nuevos datos ingresados
+        function UpdateViajero(viajero1, IdViajero) {
+            var viajero = JSON.stringify(viajero1);
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero/UpdateViajero2/?IdViajero=' + IdViajero,
+                type: "POST",
+                data: viajero,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (response) {
+                    alert("Respuesta del servidor: " + response);
+                    //sendMessageClient(formato.d, true);
+                }
+            });
+        }
+    </script>
+}

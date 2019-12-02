@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Viajero";
+}
+
+<h2>Viajero</h2>
+<p>
+    <a id="btnCreate" href="/Viajero/CreateViajero" class="btn btn-default btn-xs btn-primary create">Crear Nuevo Viajero</a>
+</p>
+
+<div>
+    
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="hidden">IdViajero</th>
+                <th>Cédula</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="table_viajeros"></tbody>
+    </table>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts
+{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function (e) {
+           
+            LoadViajeros(null);
+          
+            
+        });
+
+
+
+        function LoadViajeros(IdViajero) {
+            let tableViajero = $('#table_viajeros');
+
+            let uri = "https://localhost:44380/api/Viajero/GetViajerosByIdViajero/?IdViajero=" + IdViajero;
+            $.ajax({
+                type: 'GET',
+                url: uri,
+                dataType: 'json',
+                success: function (data) {
+                    tableViajero.empty();
+                    $.each(data, function (key, item) {
+                        $('<tr>' +
+                            '<td class="hidden"> ' + item.IdViajero + '</td > ' +
+                            '<td>' + item.Cedula + '</td>' +
+                            '<td>' + item.Nombre + '</td>' +
+                            //1
+                            //'<td>' + '<button class="btn btn-default btn-sm btn-primary" onclick="Edit(' + item.IdViajero + ')">Editar</button>'   + '</td>' +
+                            //'<td>' + '<button class="btn btn-default btn-sm btn-danger " onclick="Edit(' + item.IdViajero + ')">Eliminar</button>' + '</td>' +
+                            //2
+                            //'<td><a href="/Viajero/EditViajero/?IdViajero=' + item.IdViajero + '"class="btn btn-default btn-xs btn-success edit">Editar</a >' + '</td >' +
+                            //'<td><a href="/Viajero/DeleteViajero/?IdViajero=' + item.IdViajero + '"class="btn btn-default btn-xs btn-primary edit">Eliminar</a >' + '</td >' +
+
+                            '<td>' + '<div class="btn-toolbar">' +'<a href="/Viajero/EditViajero/?IdViajero=' + item.IdViajero + '"class="btn btn-default btn-xs btn-success edit">Editar</a>' + 
+                                     '<a href="/Viajero/DeleteViajero/?IdViajero=' + item.IdViajero + '"class="btn btn-default btn-xs btn-primary edit">Eliminar</a>'+ '</div>' + '</td >' +
+
+                            '</tr>').appendTo($('#table_viajeros'));
+                    });
+
+                }
+            });
+        }
+
+    </script>
+}

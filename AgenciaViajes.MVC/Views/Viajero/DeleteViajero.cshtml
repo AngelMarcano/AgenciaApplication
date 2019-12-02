@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "DeleteViajero";
+}
+<h2>Eliminar Viajero</h2>
+<input type="hidden" id="IdViajero" value="@Model" />
+<form id="viajeroForm">
+    <fieldset>
+        <legend><h5>Viajero</h5></legend>
+        <div class="form-group">
+            <label class="control-label ">Nombre:</label>
+            <input id="txtNombre" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Cédula:</label>
+            <input id="txtCedula" type="text" class="form-control removeLater" readonly />
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><h5>Dirección</h5></legend>
+        <div class="form-group">
+            <label class="control-label ">Dirección1:</label>
+            <input id="txtDireccion1" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Dirección2:</label>
+            <input id="txtDireccion2" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Ciudad:</label>
+            <input id="txtCiudad" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Estado:</label>
+            <input id="txtEstado" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Teléfono Móvil:</label>
+            <input id="txtTelefonoMovil" type="text" class="form-control removeLater" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Teléfono Fijo:</label>
+            <input id="txtTelefonoFijo" type="text" class="form-control removeLater" readonly />
+        </div>
+
+
+    </fieldset>
+
+    <div class="form-group">
+        <input id="btnEliminar" type="button" class="btn btn-success" value="Eliminar" />
+        <a href="/Viajero/Viajero" class="btn btn-primary">Cancelar</a>
+        @*<input id="btnCancelar" type="button" class="btn btn-primary" value="Cancelar" />*@
+    </div>
+
+</form>
+@section Scripts
+{
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+
+            var idViajero2 = $("#IdViajero").val();
+            GetViajeroByIdViajero(idViajero2);
+
+
+            $("#btnEliminar").click(function () {
+
+                DeleteViajero($("#IdViajero").val());
+                Go();
+            });
+           
+
+
+        });
+        function DeleteViajero(IdViajero) {
+            var break2 = "stop";
+
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero/DeleteViajero2/?IdViajero=' + IdViajero,
+                type: "GET",
+                data: IdViajero,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (viajero) {
+
+
+                }
+            });
+        }
+
+        //Obtiene una instancia del objeto Viajero por el IdViajero
+        function GetViajeroByIdViajero(IdViajero) {
+
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero/GetViajerosByIdViajero/?IdViajero=' + IdViajero,
+                type: "GET",
+                data: IdViajero,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (viajero) {
+                    $('#txtNombre').val(viajero.Nombre);
+                    $('#txtCedula').val(viajero.Cedula);
+                    $('#txtDireccion1').val(viajero.Direccion.Direccion1);
+                    $('#txtDireccion2').val(viajero.Direccion.Direccion2);
+                    $("#txtCiudad").val(viajero.Direccion.Ciudad);
+                    $("#txtEstado").val(viajero.Direccion.Estado);
+                    $("#txtTelefonoMovil").val(viajero.Direccion.TelefonoMovil);
+                    $("#txtTelefonoFijo").val(viajero.Direccion.TelefonoFijo);
+
+                }
+            });
+        }
+
+        function Go() {
+            window.location.href = '/Viajero/Viajero/';
+        }
+    </script>
+}
+

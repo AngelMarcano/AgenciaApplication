@@ -1,0 +1,289 @@
+﻿
+@{
+    ViewBag.Title = "CreateViajeroViaje";
+}
+
+<h2>Crear nuevo Viajero y Viaje</h2>
+
+<p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample">
+        Viajero
+    </button>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+        Viajes
+    </button>
+</p>
+
+<div class="collapse" id="collapseExample1">
+    <div class="card card-body">
+        <h2>Crear nuevo Viajero</h2>
+        <form id="viajeroForm" data-toggle="validator" role="form">
+            <fieldset>
+                <legend><h5>Viajero</h5></legend>
+                <div class="form-group">
+                    <label class="control-label ">Nombre:</label>
+                    <input id="txtNombre" type="text" class="form-control removeLater" placeholder="Nombre" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Cédula:</label>
+                    <input id="txtCedula" type="text" class="form-control removeLater" placeholder="Cédula" required />
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><h5>Dirección</h5></legend>
+                <div class="form-group">
+                    <label class="control-label ">Dirección1:</label>
+                    <input id="txtDireccion1" type="text" class="form-control removeLater" placeholder="Dirección1" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Dirección2:</label>
+                    <input id="txtDireccion2" type="text" class="form-control removeLater" placeholder="Dirección2" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label ">Ciudad:</label>
+                    <input id="txtCiudad" type="text" class="form-control removeLater" placeholder="Ciudad" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Estado:</label>
+                    <input id="txtEstado" type="text" class="form-control removeLater" placeholder="Estado" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Teléfono Móvil:</label>
+                    <input id="txtTelefonoMovil" type="text" class="form-control removeLater" placeholder="Teléfono Móvil" required />
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">Teléfono Fijo:</label>
+                    <input id="txtTelefonoFijo" type="text" class="form-control removeLater" placeholder="Teléfono Fijo" />
+                </div>
+
+
+            </fieldset>
+
+
+            
+
+        </form>
+    </div>
+</div>
+
+<div class="collapse" id="collapseExample2">
+    <div class="card card-body">
+        <input type="hidden" id="IdViajero" value="" />
+        <h2>Crear nuevo Viaje</h2>
+
+       
+        <!--Código-->
+        <div class="form-group">
+            <label for="inputCodigo">Código</label>
+            <input type="text" class="form-control removeLater" id="inputCodigo" placeholder="Código" required>
+        </div>
+        <!--Plazas-->
+        <div class="form-group">
+            <label for="inputPlazas">Plazas</label>
+            <input type="number" class="form-control removeLater" id="inputPlazas" min="1" placeholder="Plazas">
+        </div>
+        <!--Ciudad Origen-->
+        <div class="form-group ">
+            <label for="inputCiudadOrigen">Ciudad Origen</label>
+            <select id="inputCiudadOrigen" class="form-control">
+            </select>
+        </div>
+        <!--Ciudad Destino-->
+        <div class="form-group ">
+            <label for="inputCiudadDestino">Ciudad Destino</label>
+            <select id="inputCiudadDestino" class="form-control">
+            </select>
+        </div>
+        <!--Ciudad Precio-->
+        <div class="form-group ">
+            <label for="inputPrecio">Precio</label>
+            <input type="text" class="form-control removeLater" id="inputPrecio" placeholder="00.00">
+        </div>
+        <!--Fecha Salida-->
+        <div class="form-group ">
+            <label for="inputFechaSalida">Fecha Salida</label>
+            <input type="text" class="form-control datepicker removeLater" id="inputFechaSalida" name="beginDate" placeholder="2019/12/1">
+        </div>
+        <!--Hora Saldia-->
+        <div class="form-group ">
+            <label for="inputHoraSalida">Hora Salida</label>
+            <input type="time" class="form-control removeLater" id="inputHoraSalida" placeholder="">
+        </div>
+        <!--Ciudad LLegada-->
+        <div class="form-group ">
+            <label for="inputHoraLLegada">Hora Salida</label>
+            <input type="time" class="form-control removeLater" id="inputHoraLLegada">
+        </div>
+
+        <button id="btnGuardar" type="button" class="btn btn-success">Guardar</button>
+        <a id="btnCancelar" href="/Viajeros_Viajes/ViajerosViajes" class="btn btn-primary">Cancelar</a>
+    </div>
+</div>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts
+{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+            LoadDropDownCiudadesOrigen(null);
+            LoadDropDownCiudadesDestino(null);
+            $("#btnGuardar").click(function () {
+                //--Viajero
+                var nombre = $('#txtNombre').val();
+                var cedula = $('#txtCedula').val();
+                var direccion1 = $('#txtDireccion1').val();
+                var direccion2 = $('#txtDireccion2').val();
+                var ciudad = $("#txtCiudad").val();
+                var estado = $("#txtEstado").val();
+                var telefonoMovil = $("#txtTelefonoMovil").val();
+                var telefonoFijo = $("#txtTelefonoFijo").val();
+
+                let objViajero = {
+                    nombre: nombre,
+                    cedula: cedula,
+                    direccion: {
+                        direccion1: direccion1,
+                        direccion2: direccion2,
+                        ciudad: ciudad,
+                        estado: estado,
+                        telefonoMovil: telefonoMovil,
+                        telefonoFijo: telefonoFijo
+                    }
+                };
+                //---
+                //---
+                //--Viaje
+                var cedula = $("#txtCedula").val();
+
+                GetViajeroByCedula(cedula);
+                var IdViajero = $("#IdViajero").val();
+                if (IdViajero == "") {
+
+                    var Codigo = $("#inputCodigo").val();
+                    var Plazas = $("#inputPlazas").val();
+                    var IdOrigen = $('#inputCiudadOrigen :selected').val();
+                    var IdDestino = $('#inputCiudadDestino :selected').val();
+                    var Precio = $("#inputPrecio").val();
+                    var FechaSalida = $('#inputFechaSalida').val();
+                    var HoraSalida = $("#inputHoraSalida").val();
+                    var HoraLLegada = $("#inputHoraLLegada").val();
+
+                    var stop = "detener";
+
+                    let objViaje = {
+                        Codigo: Codigo,
+                        IdViajero: IdViajero,
+                        Plazas: Plazas,
+                        IdOrigen: IdOrigen,
+                        IdDestino: IdDestino,
+                        Precio: Precio,
+                        FechaSalida: FechaSalida,
+                        HoraSalida: HoraSalida,
+                        HoraLLegada: HoraLLegada
+                    };
+                    //--
+                    let viajeroViaje = {
+                        Viajero: objViajero,
+                        Viajes: objViaje
+                    };
+                    //--Insertar
+                    InsertViajeroVieaje(viajeroViaje);
+                    $(".removeLater").val('');
+
+                }
+                else {
+                    alert('La cédula del viajero se encuentra registrada en el sistema. Por favor vaya al formulario de Viajes y creele un nuevo viaje');
+                }
+
+            });
+        });
+
+        //Carga las ciudades de origen
+        function LoadDropDownCiudadesOrigen(IdCiduad) {
+            let dropdown = $('#inputCiudadOrigen');
+            //if (IdCiduad == null) {
+            //    $('#dropdown').empty();
+            //}
+            var EmployeeID = IdCiduad;
+            let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
+            $.ajax({
+                type: 'GET',
+                url: uri,
+                dataType: 'json',
+                success: function (data) {
+                    dropdown.append('<option selected="true" disabled>Seleccione</option>');
+                    dropdown.prop('selectedIndex', 0);
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option></option>').attr('value', entry.IdCiudad).text(entry.Ciudad));
+                    })
+                    todos = data;
+                }
+            });
+        }
+        //Carga las ciudades de destino
+        function LoadDropDownCiudadesDestino(IdCiduad) {
+            let dropdown = $('#inputCiudadDestino');
+            //if (IdCiduad == null) {
+            //    $('#dropdown').empty();
+            //}
+            let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
+            $.ajax({
+                type: 'GET',
+                url: uri,
+                dataType: 'json',
+                success: function (data) {
+                    dropdown.append('<option selected="true" disabled>Seleccione</option>');
+                    dropdown.prop('selectedIndex', 0);
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option></option>').attr('value', entry.IdCiudad).text(entry.Ciudad));
+                    })
+                    todos = data;
+                }
+            });
+        }
+        //Busca viajero por cédula
+        function GetViajeroByCedula(cedula) {
+            let dropdown = $('#inputCiudadOrigen');
+            //if (IdCiduad == null) {
+            //    $('#dropdown').empty();
+            //}
+
+            let uri = "https://localhost:44380/api/Viajero/GetViajeroByCedula/?cedula=" + cedula;
+            $.ajax({
+                type: 'GET',
+                async: false,
+                url: uri,
+                dataType: 'json',
+                success: function (data) {
+                    $("#IdViajero").val(data.IdViajero);
+                }
+            });
+
+        }
+        //
+        function InsertViajeroVieaje(objViajeroViaje) {
+            var viajeroViaje = JSON.stringify(objViajeroViaje);
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero_Viajes/InsertViajeroViajes',
+                type: "POST",
+                data: viajeroViaje,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (formato) {
+                    $(".removeLater").val('');
+                    sendMessageClient(formato.d, true);
+                }
+            });
+        }
+
+    </script>
+}

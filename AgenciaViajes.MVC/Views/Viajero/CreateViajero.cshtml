@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "CreateViajero";
+    @*  *@}
+
+<h2>Crear nuevo Viajero</h2>
+<form id="viajeroForm" data-toggle="validator" role="form">
+    <fieldset>
+        <legend><h5>Viajero</h5></legend>
+        <div class="form-group">
+            <label class="control-label ">Nombre:</label>
+            <input id="txtNombre" type="text" class="form-control removeLater" placeholder="Nombre" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Cédula:</label>
+            <input id="txtCedula" type="text" class="form-control removeLater" placeholder="Cédula" required />
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend><h5>Dirección</h5></legend>
+        <div class="form-group">
+            <label class="control-label ">Dirección1:</label>
+            <input id="txtDireccion1" type="text" class="form-control removeLater" placeholder="Dirección1" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Dirección2:</label>
+            <input id="txtDireccion2" type="text" class="form-control removeLater" placeholder="Dirección2" />
+        </div>
+
+        <div class="form-group">
+            <label class="control-label ">Ciudad:</label>
+            <input id="txtCiudad" type="text" class="form-control removeLater" placeholder="Ciudad" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Estado:</label>
+            <input id="txtEstado" type="text" class="form-control removeLater" placeholder="Estado" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Teléfono Móvil:</label>
+            <input id="txtTelefonoMovil" type="text" class="form-control removeLater" placeholder="Teléfono Móvil" required />
+        </div>
+        <div class="form-group">
+            <label class="control-label ">Teléfono Fijo:</label>
+            <input id="txtTelefonoFijo" type="text" class="form-control removeLater" placeholder="Teléfono Fijo" />
+        </div>
+
+
+    </fieldset>
+
+
+    <div class="form-group float-lg-right">
+        <button id="btnGuardar" type="submit" class="btn btn-success" value="Guardar">Guardar</button>
+        <a id="btnCancelar" href="/Viajero/Viajero" class="btn btn-primary">Cancelar</a>
+    </div>
+
+</form>
+
+@section Scripts
+{
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+
+            $("#btnGuardar").click(function () {
+                var nombre = $('#txtNombre').val();
+                var cedula = $('#txtCedula').val();
+                var direccion1 = $('#txtDireccion1').val();
+                var direccion2 = $('#txtDireccion2').val();
+                var ciudad = $("#txtCiudad").val();
+                var estado = $("#txtEstado").val();
+                var telefonoMovil = $("#txtTelefonoMovil").val();
+                var telefonoFijo = $("#txtTelefonoFijo").val();
+
+                let objViajero = {
+                    nombre: nombre,
+                    cedula: cedula,
+                    direccion: {
+                        direccion1: direccion1,
+                        direccion2: direccion2,
+                        ciudad: ciudad,
+                        estado: estado,
+                        telefonoMovil: telefonoMovil,
+                        telefonoFijo: telefonoFijo
+                    }
+                };
+
+                InsertarViajero(objViajero);
+                $(".removeLater").val('');
+
+            });
+        });
+        function InsertarViajero(viajero1) {
+            var viajero = JSON.stringify(viajero1);
+            $.ajax({
+                url: 'https://localhost:44380/api/Viajero/InsertViajero',
+                type: "POST",
+                data: viajero, //JSON.stringify({ viajero: viajero }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    alert(response.responseText);
+                    sendMessageClient("", false);
+                },
+                success: function (formato) {
+                    $(".removeLater").val('');
+                    sendMessageClient(formato.d, true);
+                }
+            });
+        }
+
+        function Go() {
+            window.location.href = '/Viajero/Viajero/';
+        }
+    </script>
+}
+

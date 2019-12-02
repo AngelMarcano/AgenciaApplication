@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Viajes";
+}
+
+<h2>Viajes</h2>
+<p>
+    <a id="btnCreate" href="/Viajes/CreateViajes" class="btn btn-default btn-xs btn-primary create">Crear Nuevo Viaje</a>
+</p>
+
+<div>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th hidden>IdViaje</th>
+                <th>Viajero</th>
+                <th>Cédula</th>
+                <th>Codigo</th>
+                <th>Plazas</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Precio</th>
+                <th hidden>IdViajero</th>
+                <th>FechaSalida</th>
+                <th>HoraSalida</th>
+                <th>HoraLLegada</th>
+                <th>Acciones</th>
+
+
+            </tr>
+        </thead>
+        <tbody id="table_viajes"></tbody>
+    </table>
+</div>
+
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+@section Scripts
+{
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/JavaScript">
+
+        $(document).ready(function (e) {
+           
+            LoadViajes(null);
+          
+            
+        });
+
+        function LoadViajes(IdViaje) {
+            let tableViajes = $('#table_viajes');
+                      
+            let uri = "https://localhost:44380/api/Viajes/GetViajesByIdViaje/?IdViaje=" + IdViaje;
+            $.ajax({
+                type: 'GET',
+                url: uri,
+                dataType: 'json',
+                success: function (data) {
+                    tableViajes.empty();
+                    $.each(data, function (key, item) {
+                        $('<tr>' +
+                            '<td hidden> ' + item.IdViajero + '</td > ' +
+                            '<td>' + item.Viajero.Nombre + '</td>' +
+                            '<td>' + item.Viajero.Cedula + '</td>' +
+                            '<td>' + item.Codigo + '</td>' +
+                            '<td>' + item.Plazas + '</td>' +
+                            '<td>' + item.Origen + '</td>' +
+                            '<td>' + item.Destino + '</td>' +
+                            '<td>' + item.Precio + '</td>' +
+                            '<td>' + item.FechaSalida + '</td>' +
+                            '<td>' + item.HoraSalida + '</td>' +
+                            '<td>' + item.HoraLLegada + '</td>' +
+                            //'<td>' + '<button class="btn btn-default btn-sm btn-primary" onclick="Edit(' + item.IdViajero + ')">Editar</button>'   + '</td>' +
+                            //'<td>' + '<button class="btn btn-default btn-sm btn-danger " onclick="Edit(' + item.IdViajero + ')">Eliminar</button>' + '</td>' +
+                            '<td>' + '<div class="btn-toolbar">' +'<a href="/Viajes/EditViajes/?IdViaje=' + item.IdViaje + '"class="btn btn-default btn-xs btn-success edit">Editar</a>' + 
+                                     '<a href="/Viajes/DeleteViajes/?IdViaje=' + item.IdViaje + '"class="btn btn-default btn-xs btn-primary edit">Eliminar</a>'+ '</div>' + '</td >' +
+                            '</tr>').appendTo($('#table_viajes'));
+                    });
+
+                }
+            });
+        }
+    </script>
+}
