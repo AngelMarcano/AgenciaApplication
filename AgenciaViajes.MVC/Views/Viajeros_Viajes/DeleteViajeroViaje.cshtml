@@ -98,6 +98,7 @@
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
                 type: 'GET',
+                async: false,
                 url: uri,
                 dataType: 'json',
                 success: function (data) {
@@ -117,6 +118,7 @@
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
                 type: 'GET',
+                async: false,
                 url: uri,
                 dataType: 'json',
                 success: function (data) {

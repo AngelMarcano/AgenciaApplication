@@ -266,6 +266,8 @@
             });
         }
         //Carga las ciudades de destino
+        //Nota IMPORTANTE: si se le quitan el async:false, al cargar el ddl de ciudades origen y destino no va marcar las ciudades seleccinadas
+        //Es decir, las funciones deben ejecutarse como síncronas y no como asíncronas. 
         function LoadDropDownCiudadesDestino(IdCiduad) {
             let dropdown = $('#inputCiudadDestino');
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
