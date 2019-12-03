@@ -129,28 +129,34 @@
             $(".datepicker").datepicker({
                 dateFormat: "yy-mm-dd"
             });
-            var IdViaje = $("#IdViaje").val();
+            //Se cargan los ddl de ciudades
             LoadDropDownCiudadesOrigen(null);
             LoadDropDownCiudadesDestino(null);
-            GetViajeByIdViaje(IdViaje)
 
-            var IdViajero = $("#IdViajero").val();
-            GetViajeroByIdViajero(IdViajero);
+            //Obtiene el valor del IdViaje Pasado desde el controller
+            var IdViaje = $("#IdViaje").val();
+            //Obtiene el viaje por el IdViaje
+            GetViajeByIdViaje(IdViaje)
             var ciudadOrigen = $("#IdOrigen").val();
             var ciudadDestino = $("#IdDestino").val();
             $("#inputCiudadOrigen").prop('selectedIndex', ciudadOrigen);
             $("#inputCiudadDestino").prop('selectedIndex', ciudadDestino);
+            //Al obtener el registro de viaje, también se obtiene el IdViajero
+            var IdViajero = $("#IdViajero").val();
+            //Se obtiene el registro de Viajero con el IdViajero
+            GetViajeroByIdViajero(IdViajero);
+            
 
             $("#btnGuardar").click(function () {
                 //--Viajero
-                var nombre = $('#txtNombre').val();
-                var cedula = $('#txtCedula').val();
-                var direccion1 = $('#txtDireccion1').val();
-                var direccion2 = $('#txtDireccion2').val();
-                var ciudad = $("#txtCiudad").val();
-                var estado = $("#txtEstado").val();
-                var telefonoMovil = $("#txtTelefonoMovil").val();
-                var telefonoFijo = $("#txtTelefonoFijo").val();
+                //var nombre = $('#txtNombre').val();
+                //var cedula = $('#txtCedula').val();
+                //var direccion1 = $('#txtDireccion1').val();
+                //var direccion2 = $('#txtDireccion2').val();
+                //var ciudad = $("#txtCiudad").val();
+                //var estado = $("#txtEstado").val();
+                //var telefonoMovil = $("#txtTelefonoMovil").val();
+                //var telefonoFijo = $("#txtTelefonoFijo").val();
 
                 let objViajero = {
                     idViajero: $("#IdViajero").val(),
@@ -169,7 +175,9 @@
                 //---
                 //--Viaje
                 var cedula = $("#txtCedula").val();
-
+                //Busca si existe un viajero con la misma cédula. 
+                //Si existe el viajero, entonces envía un mensaje de que ya existe la cédula del Viajero
+                //Si no existe la cédula, entonces guardar la instancia del ViajeroViaje a la base de datos
                 GetViajeroByCedula(cedula);
                 var IdViajero = $("#IdViajero").val();
                 if (IdViajero != "") {
@@ -244,6 +252,7 @@
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
                 type: 'GET',
+                async: false,
                 url: uri,
                 dataType: 'json',
                 success: function (data) {
@@ -262,6 +271,7 @@
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
                 type: 'GET',
+                async: false,
                 url: uri,
                 dataType: 'json',
                 success: function (data) {

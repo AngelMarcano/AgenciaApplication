@@ -133,6 +133,7 @@
             LoadDropDownCiudadesOrigen(null);
             LoadDropDownCiudadesDestino(null);
             $("#btnGuardar").click(function () {
+                $("#IdViajero").val("");
                 //--Viajero
                 var nombre = $('#txtNombre').val();
                 var cedula = $('#txtCedula').val();
@@ -206,9 +207,7 @@
         //Carga las ciudades de origen
         function LoadDropDownCiudadesOrigen(IdCiduad) {
             let dropdown = $('#inputCiudadOrigen');
-            //if (IdCiduad == null) {
-            //    $('#dropdown').empty();
-            //}
+            
             var EmployeeID = IdCiduad;
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
@@ -228,9 +227,7 @@
         //Carga las ciudades de destino
         function LoadDropDownCiudadesDestino(IdCiduad) {
             let dropdown = $('#inputCiudadDestino');
-            //if (IdCiduad == null) {
-            //    $('#dropdown').empty();
-            //}
+            
             let uri = "https://localhost:44380/api/Ciudades/GetCiudadesById/?IdCiudad=" + IdCiduad;
             $.ajax({
                 type: 'GET',
@@ -249,9 +246,6 @@
         //Busca viajero por cédula
         function GetViajeroByCedula(cedula) {
             let dropdown = $('#inputCiudadOrigen');
-            //if (IdCiduad == null) {
-            //    $('#dropdown').empty();
-            //}
 
             let uri = "https://localhost:44380/api/Viajero/GetViajeroByCedula/?cedula=" + cedula;
             $.ajax({
